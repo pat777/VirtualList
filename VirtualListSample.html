@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="../../lib/sencha/resources/css/sencha-touch.css" type="text/css">
+
+    <script type="text/javascript" src="../../lib/sencha/sencha-touch.js"></script>
+	<script type="text/javascript" src="lib/VirtualList.js"></script>
+    <script type="text/javascript" src="items.js"></script>
+	<style type="text/css">
+		.x-list .x-list-item {
+			font-weight: bold;
+			font-size: 100%;
+			font-family:helvetica;
+			height: 75px; /* Should be equal to defaultItemHeight of VirtualList */
+		}
+	</style>  
+    <script type="text/javascript">
+	
+	//------------------
+	// A timer which adds a new Entry every 5 seconds
+	var listStore; 
+	var c = 0;
+	var timerHandle;
+	var timerActive = false;
+	function timedCount()
+	{
+		listStore.add({ label: 'Test ' + c++ });
+		timerHandle = setTimeout("timedCount()", 5000);
+	}
+	function startTimer()
+	{
+		if ( !timerActive )
+		{
+			timerActive = 1;
+			timedCount();
+		}
+	}	
+	//------------------
+	
+    Ext.setup({
+        onReady : function() {
+		
+			// Define model
+            Ext.regModel('ItemModel', {
+                fields: ['label']
+            });
+			
+			// Create store
+			listStore = new Ext.data.Store({
+                    model: 'ItemModel',
+
+                    getGroupString: function(record) {
+                        return record.get('label')[0].toUpperCase();
+                    }
+			});
+
+			// Base list configuration
+            var baseConfig = {
+                itemTpl: '{label}',
+                grouped: true,		
+                indexBar: true,
+  				blockScrollSelect: true,
+				defaultItemHeight: 75, //  needed!
+				
+				listeners: {
+					selectionchange: function(selectionModel, records) {
+						try
+						{
+							if(Ext.isArray(records) && records.length > 0) {
+								alert(records[0].data.label);
+							}
+						} catch(exc) {
+							alert('* EXC: ' + exc);
+						}
+					}
+				},
+				
+                store: listStore
+            };
+
+			var list;
+            if (!Ext.is.Phone) {
+                list = new 
+					Ext.ux.VirtualList
+					(Ext.apply(baseConfig, {
+						floating: true,
+						width: 500,
+						height: 700,
+						centered: true,
+						modal: true,
+						hideOnMaskTap: false
+                })).show();
+            }
+            else {
+                list = new 
+					Ext.ux.VirtualList
+					(Ext.apply(baseConfig, {
+                    fullscreen: true
+                }));
+            }
+			
+			// test to see if data load is handled correctly
+			list.store.loadData(ListTestData);
+			
+			// Start test timer
+			//startTimer();
+        }
+    });
+    </script>
+</head>
+<body></body>
+</html>
