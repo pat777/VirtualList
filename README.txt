@@ -13,7 +13,7 @@ started to design and implement my own version of a Sencha Touch List component 
 to the needs of my project. Since the control turned out to be more as an "educational project" I
 decided to share it with the community (maybe someone out there considers the component useful too).
 
-The control just renders a maximum of containerMaxItemCount * 3 items at any time. It is a very
+The control just renders a maximum of (containerMaxItemCount * 3) items of the store at any time. Additional (storeCount / containerMaxItemCount) "container" items will be added. It is a very
 lightweight control and some features are intentionally left out for the first version:
 
 - the selection is not persistent
