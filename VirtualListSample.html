@@ -61,7 +61,7 @@
                 grouped: true,		
                 indexBar: true,
   				blockScrollSelect: true,
-				defaultItemHeight: 75, //  needed!
+				defaultItemHeight: 75, // must have!
 				
 				listeners: {
 					selectionchange: function(selectionModel, records) {
@@ -73,6 +73,10 @@
 						} catch(exc) {
 							alert('* EXC: ' + exc);
 						}
+					},
+					
+					renderedAreaChanged: function(top, bottom) {
+						console.log('* EVENT: Rendered Area Change: ' + top + ', ' + bottom);
 					}
 				},
 				
