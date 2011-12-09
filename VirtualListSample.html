@@ -62,6 +62,7 @@
                 indexBar: true,
   				blockScrollSelect: true,
 				defaultItemHeight: 75, // must have!
+				onItemDisclosure: true,
 				
 				listeners: {
 					selectionchange: function(selectionModel, records) {
@@ -77,7 +78,14 @@
 					
 					renderedAreaChanged: function(top, bottom) {
 						console.log('* EVENT: Rendered Area Change: ' + top + ', ' + bottom);
-					}
+					},
+					
+					disclose: function( record, node, index, e ) {
+						var msg = 'Disclose event for item: ' + 
+							record.get('label');
+						console.log('* EVENT (disclose): ' + msg);
+						alert(msg);
+					},
 				},
 				
                 store: listStore
